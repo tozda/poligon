@@ -28,14 +28,6 @@ morning_game_day = 'Saturday'
 morning_game_time = '9:00'
 secret_filename = 'sekrety.txt'
 run_log_filename = 'runlog.txt'
-# Constant for text meaning reservation to be made put in href
-RESERVE = "Rezerwuj"
-# login config
-main_url = "https://korty.org/klub/"
-club_tag = "am-tenis"
-url_params = "/dedykowane?data_grafiku=<YYYY-MM-DD>" \
-             "&dyscyplina=1&strona="
-court_url_template = main_url + club_tag + url_params
 
 
 # map string of day into appropriate day number starting from
@@ -121,6 +113,14 @@ for req_day in req_days:
         time_slot = None
         # variable for court number
         court_number = None
+        # Constant for text meaning reservation to be made put in href
+        RESERVE = "Rezerwuj"
+        # login config
+        main_url = "https://korty.org/klub/"
+        club_tag = "am-tenis"
+        url_params = "/dedykowane?data_grafiku=<YYYY-MM-DD>" \
+                     "&dyscyplina=1&strona="
+        court_url_template = main_url + club_tag + url_params
 
         play_date = date.today()
         today_name = date.strftime(play_date, '%A')
