@@ -6,6 +6,7 @@ import platform
 
 
 """
+    ############################################################################
     This script log in into korty.org service within the context of
     AM Tenis Klub. Then it checks if there are any free courts within
     given date and hour.
@@ -33,8 +34,7 @@ RESERVE = "Rezerwuj"
 # login config
 main_url = "https://korty.org/klub/"
 club_tag = "am-tenis"
-url_params = "/dedykowane?data_grafiku=<YYYY-MM-DD>" \
-             "&dyscyplina=1&strona="
+url_params = "/dedykowane?data_grafiku=<YYYY-MM-DD>&dyscyplina=1&strona="
 court_url_template = main_url + club_tag + url_params
 
 
@@ -215,22 +215,26 @@ for req_day in req_days:
             information.append(text_message)
 
 
-# send info to
+# read log from last run
 run_log = open(run_log_filename, 'r')
-run_log_set = set(run_log)
+run_log_set = set(run_log)  # convert into set in order to find delta
 run_log.close()
+# find difference between last run and current run comparing messages
 delta = [x for x in information if x not in run_log_set]
+# check if there is any difference...
 is_delta = len(delta)
-
+# ... and if not then say no change
 if is_delta == 0:
     send_to_slack('Kortów brak!!!')
-else:
+else:  # but if this is then send slack messages
     for d in delta:
         send_to_slack(d)
 
 # close browser
 driver.quit()
 
+# write log from current run in order to have something to compare to
+# when script will be run next time
 run_log = open(run_log_filename, 'w')
 for info in information:
     run_log.write(info)
